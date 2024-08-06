@@ -1,0 +1,60 @@
+import sys, getopt
+
+jmsDest = ["SystemModule-0!", "Queue-1"]
+
+def monitorJMS(targetName):
+   import time 
+   leyenda="time, serverName, jmsDest, MessagesCurrentCount, MessagesPendingCount, MessagesHighCount, MessagesMovedCurrentCount,"
+   leyenda=leyenda+" MessagesReceivedCount, MessagesThresholdTime"
+
+   domainRuntime()
+   print leyenda
+
+   srv='AdminServer'
+   jms='JMSServer-0'
+
+   myPath = "/ServerServices/"+srv+"/RuntimeService/Services/RuntimeService/Services/RuntimeService/ServerRuntime/"+srv+"/JMSRuntime/"+srv+".jms/JMSServers/"+jms+"/Destinations/SystemModule-0!Queue-1"
+   cd(myPath)
+
+   while 1:
+      #if (srv == 'at25_s1_XIIIwli'):
+      #   srv='at25_s2_XIIIwli'
+      #   jms='pica_mp_jms_server_at25_s2'
+      #elif (srv=='at25_s2_XIIIwli'):
+      #   srv='at26_s1_XIIIwli'
+      #   jms='pica_mp_jms_server_at26_s1'
+      #else:
+      #   srv='AdminServer'
+      #   jms='JMSServer-0'
+      print time.ctime(),",",srv,",",jms+i,",",cmo.getMessagesCurrentCount(),",",cmo.getMessagesPendingCount(),",",cmo.getMessagesHighCount(),",",cmo.getMessagesMovedCurrentCount(),",",cmo.getMessagesReceivedCount(),",",cmo.getMessagesThresholdTime()
+      java.lang.Thread.sleep(1000)
+
+		 
+if __name__== "main":
+   uname = 'weblogic'
+   pwd = 'Welcome1#'
+   url = "t3://127.0.0.1:7001"
+   redirect('./output.out', 'false')
+   try:
+      opts, args = getopt.getopt(sys.argv[1:],"hu:p:l:t:j:")
+   except getopt.GetoptError:
+      print 'monit_jms.py -u <username> -p <password> -l <admin_url> -t <target_name>'
+      sys.exit(2)
+   for opt, arg in opts:
+      if opt == '-h':
+         print 'monit_jms.py -u <username> -p <password> -l <admin_url> -t <target_name>'
+         sys.exit()
+      elif opt == '-t':
+         target = arg
+      elif opt == '-u':
+         uname = arg
+      elif opt == '-p':
+         pwd = arg
+      elif opt == '-l':
+         url = arg
+   
+   #Connecting to the domain
+   connect(uname, pwd, url)
+   #Monitor JMS
+   monitorJMS(target)
+   stopRedirect()
